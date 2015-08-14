@@ -19,6 +19,7 @@ AppConfig ||= Configurate::Settings.create do
   add_provider Configurate::Provider::Env
 
   unless heroku? || rails_env == "test" || File.exist?(File.join(config_dir, "diaspora.yml"))
+    warn "#{File.exist?(File.join(config_dir, "diaspora.yml"))}"
     warn "FATAL: Configuration not found. Copy over diaspora.yml.example"
     warn "       to diaspora.yml and edit it to your needs."
     exit!

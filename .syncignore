@@ -1,0 +1,57 @@
+.bundle
+vendor/bundle/
+vendor/cache/
+.rvmrc_custom
+.rvmrc.local
+
+#Mailing list stuff
+config/email_offset
+config/mailing_list.csv
+
+# Generated files
+log/
+public/stylesheets/*.css
+public/diaspora
+spec/fixtures/*.y*ml
+spec/fixtures/*.fixture.*
+coverage/
+xml_locales/
+public/404.html
+public/422.html
+public/500.html
+
+#Documentation
+.yardoc/
+doc/
+
+# Uploaded files and local files
+public/uploads/
+tmp/**/
+tmp/
+*.sqlite3
+
+# Temporary files of every sort
+.sass-cache/
+.DS_Store
+.idea
+.redcar
+.rvmrc
+.stgit*
+*.swap
+*.swo
+*.swp
+*~
+*#
+nbproject
+patches-*
+capybara-*.html
+dump.rdb
+
+#Rubinius's JIT
+*.rbc
+
+#IDE
+diaspora.iml
+
+# Dolphin's directory's preferences files
+*.directory
