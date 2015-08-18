@@ -10,16 +10,17 @@ systems({
     image: {"dockerfile": "./Dockerfile"},
     // Steps to execute before running instances
     provision: [
-      "bundle install --path /azk/bundler",
+      "bundle install --path /azk/bundler --without test development",
       "bundle exec rake db:create",
-      "bundle exec rake db:migrate",
+      "bundle exec rake db:schema:load",
+      "bundle exec rake assets:precompile",
     ],
     workdir: "/azk/#{manifest.dir}",
     shell: "/bin/bash",
-    command: "bundle exec rackup config.ru --pid /tmp/ruby.pid --port $HTTP_PORT --host 0.0.0.0",
+    command: "bundle exec unicorn -c config/unicorn.rb --port $HTTP_PORT --host 0.0.0.0",
     wait: 20,
     mounts: {
-      '/azk/#{manifest.dir}': sync(".", {shell: true}),
+      '/azk/#{manifest.dir}': sync("."),
       '/azk/bundler': persistent("./bundler"),
       '/azk/#{manifest.dir}/tmp': persistent("./tmp"),
       '/azk/#{manifest.dir}/log': path("./log"),
@@ -39,8 +40,8 @@ systems({
       // Make sure that the PORT value is the same as the one
       // in ports/http below, and that it's also the same
       // if you're setting it in a .env file
-      RUBY_ENV: "development",
-      RAILS_ENV: "development",
+      RUBY_ENV: "production",
+      RAILS_ENV: "production",
       BUNDLE_APP_CONFIG: "/azk/bundler",
       DB: "postgres",
       CONFIGURATION_ENVIRONMENT_URL: "http://#{system.name}.#{azk.default_domain}",
@@ -51,6 +52,9 @@ systems({
       MAIL_SMTP_HOST: env.SMTP_ADDRESS,
       MAIL_SMTP_PORT: env.SMTP_PORT,
       ENVIRONMENT_URL: "http://#{system.name}.#{azk.default_domain}",
+      ENVIRONMENT_REQUIRE_SSL: 'false',
+      ENVIRONMENT_CERTIFICATE_AUTHORITIES: '/etc/ssl/certs/ca-certificates.crt',
+      SERVER_RAILS_ENVIRONMENT: 'production',
     },
   },
   worker: {
@@ -84,7 +88,7 @@ systems({
       MYSQL_ROOT_PASSWORD: "mysecretpassword",
       MYSQL_USER: "azk",
       MYSQL_PASS: "azk",
-      MYSQL_DATABASE: "#{manifest.dir}_development",
+      MYSQL_DATABASE: "#{manifest.dir}_production",
     },
     export_envs: {
       // check this gist to configure your database
@@ -111,7 +115,7 @@ systems({
       // set instances variables
       POSTGRESQL_USER: "azk",
       POSTGRESQL_PASS: "azk",
-      POSTGRESQL_DB: "postgres_development",
+      POSTGRESQL_DB: "postgres_production",
     },
     export_envs: {
       // check this gist to configure your database
