@@ -82,3 +82,6 @@ diaspora.iml
 
 # Dolphin's directory's preferences files
 *.directory
+
+#azk dir
+.azk/
