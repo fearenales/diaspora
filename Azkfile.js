@@ -75,7 +75,7 @@ systems({
     shell: "/bin/bash",
     wait: 25,
     mounts: {
-      '/var/lib/mysql': persistent("#{manifest.dir}/mysql"),
+      '/var/lib/mysql': persistent("./mysql"),
     },
     scalable: { default: 0, limit: 0 },
     ports: {
@@ -105,7 +105,7 @@ systems({
     shell: "/bin/bash",
     wait: 20,
     mounts: {
-      '/var/lib/postgresql/data': persistent("postgresql"),
+      '/var/lib/postgresql/data': persistent("./postgresql"),
       '/var/log/postgresql': path("./log/postgresql"),
     },
     ports: {
