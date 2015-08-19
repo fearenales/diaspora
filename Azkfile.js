@@ -26,7 +26,8 @@ systems({
       '/azk/#{manifest.dir}/log': path("./log"),
       '/azk/#{manifest.dir}/.bundle': path("./.bundle"),
       '/azk/#{manifest.dir}/public/uploads': persistent("./public/uploads"),
-      '/azk/#{manifest.dir}/public/assets': persistent("./public/assets")
+      '/azk/#{manifest.dir}/public/assets': persistent("./public/assets"),
+      '/azk/#{manifest.dir}/config/diaspora.yml': path("./config/diaspora.yml.example"),
     },
     scalable: {"default": 1},
     http: {
